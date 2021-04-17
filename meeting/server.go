@@ -2,16 +2,24 @@ package meeting
 
 import (
     "fmt"
-//    "io"
+    "io"
     "net/http"
 )
 
-func greeterHandler(writer http.ResponseWriter, r *http.Request) {
+func greet(writer io.Writer) {
     fmt.Fprintf(writer, "Hello world")
 } 
 
-func byeHandler(writer http.ResponseWriter, r *http.Request) {
+func greeterHandler(writer http.ResponseWriter, r *http.Request) {
+    greet(writer)
+} 
+
+func bye(writer io.Writer) {
     fmt.Fprintf(writer, "Good bye")
+} 
+
+func byeHandler(writer http.ResponseWriter, r *http.Request) {
+    bye(writer)
 } 
 
 func RunServer() {
