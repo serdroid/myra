@@ -1,1 +1,3 @@
-curl http://localhost:5000
+curl http://localhost:5000/hello
+curl http://localhost:5000/bye
+

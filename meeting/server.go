@@ -23,7 +23,7 @@ func byeHandler(writer http.ResponseWriter, r *http.Request) {
 } 
 
 func RunServer() {
-    http.HandleFunc("/", greeterHandler)
+    http.HandleFunc("/hello", greeterHandler)
     http.HandleFunc("/bye", byeHandler)
     http.ListenAndServe(":5000", nil)
 }
