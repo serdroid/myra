@@ -5,7 +5,7 @@ import (
 )
 
 func TestFindMeeting(test *testing.T) {
-    meetingResource := initializeResource()
+    meetingResource := initializeMeetingResource()
     got := meetingResource.findMeeting("sefa", "20210417")
     want := Meeting{"12e3", "sefa", "hayta", "20210417", 30}
     

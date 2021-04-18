@@ -9,26 +9,11 @@ type Meeting struct {
 }
 
 
-type DataStore interface {
-    findMeeting(host string, date string) Meeting
-}
-
-type HardCodedDataStore struct {}
-
-func (h *HardCodedDataStore) findMeeting(host string, date string) Meeting {
-    return Meeting{"12e3", "sefa", "hayta", "20210417", 30}
-}
-
 type MeetingResource struct {
-    Store *DataStore
+    Store *dataStore
 }
 
-func NewHardCodedDataStore() *DataStore {
-    var store DataStore = &HardCodedDataStore{}
-    return &store
-}
-
-func NewMeetingResource(store *DataStore) *MeetingResource {
+func NewMeetingResource(store *dataStore) *MeetingResource {
     return &MeetingResource{Store : store}
 }
 
@@ -37,7 +22,7 @@ func (m *MeetingResource) findMeeting(host string, date string) Meeting {
     return store.findMeeting(host, date)
 }
 
-func initializeResource() *MeetingResource {
+func initializeMeetingResource() *MeetingResource {
     store := NewHardCodedDataStore()
     return NewMeetingResource(store)
 }
