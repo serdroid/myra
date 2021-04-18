@@ -1,5 +1,8 @@
 package meeting
 
+var MEETINGS = []Meeting {
+{"12e3", "sefa", "hayta", "20210417", 30},
+}
 
 type dataStore interface {
     findMeeting(host string, date string) Meeting
@@ -8,7 +11,7 @@ type dataStore interface {
 type hardCodedDataStore struct {}
 
 func (h *hardCodedDataStore) findMeeting(host string, date string) Meeting {
-    return Meeting{"12e3", "sefa", "hayta", "20210417", 30}
+    return MEETINGS[0]
 }
 
 func NewHardCodedDataStore() *dataStore {
