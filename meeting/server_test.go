@@ -3,6 +3,8 @@ package meeting
 import (
     "testing"
     "bytes"
+    "net/http"
+    "net/http/httptest"
 )
 
 func TestGreet(test *testing.T) {
@@ -28,3 +30,42 @@ func TestBye(test *testing.T) {
         test.Errorf("got %q want %q", got, want)
     }
 }
+
+func TestGetHello(test *testing.T) {
+	req, err := http.NewRequest("GET", "/hello", nil)
+	if err != nil {
+		test.Fatal(err)
+	}
+	responseRecorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(greeterHandler)
+	handler.ServeHTTP(responseRecorder, req)
+	if status := responseRecorder.Code; status != http.StatusOK {
+		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+    got := responseRecorder.Body.String()
+    want := "Hello, world\n"
+    if got != want {
+        test.Errorf("handler returned unexpected body: got %q want %q", got, want)
+    }
+}
+
+func TestGetBye(test *testing.T) {
+	req, err := http.NewRequest("GET", "/bye", nil)
+	if err != nil {
+		test.Fatal(err)
+	}
+	responseRecorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(byeHandler)
+	handler.ServeHTTP(responseRecorder, req)
+	if status := responseRecorder.Code; status != http.StatusOK {
+		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+    got := responseRecorder.Body.String()
+    want := "Good bye"
+    if got != want {
+        test.Errorf("handler returned unexpected body: got %q want %q", got, want)
+    }
+}
+
