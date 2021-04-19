@@ -7,6 +7,28 @@ import (
     "github.com/gorilla/mux"
 )
 
+type App struct {
+    router *mux.Router
+    meetingResource *MeetingResource
+}
+
+var Application App;
+
+func (a *App) Initialize() {
+    a.router = mux.NewRouter()
+    a.meetingResource = initializeMeetingResource()
+}
+
+func (a *App) Run() {
+    bindHandlers(a.router)
+    http.ListenAndServe(":5000", a.router)
+}
+
+func bindHandlers(router *mux.Router) {
+    router.HandleFunc("/hello/{user}", greeterHandler).Methods(http.MethodGet)
+    router.HandleFunc("/bye", byeHandler)
+}
+
 func greet(writer io.Writer, name string) {
     fmt.Fprintf(writer, "Hello, %s\n", name)
 } 
@@ -28,10 +50,3 @@ func byeHandler(writer http.ResponseWriter, r *http.Request) {
     bye(writer)
 } 
 
-func RunServer() {
-    router := mux.NewRouter()
-    router.HandleFunc("/hello/{user}", greeterHandler).Methods(http.MethodGet)
-
-    router.HandleFunc("/bye", byeHandler)
-    http.ListenAndServe(":5000", router)
-}
