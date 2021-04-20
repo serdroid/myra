@@ -1,11 +1,11 @@
 package meeting
 
 type Meeting struct {
-    Id string
-    Host string
-    Guest string
-    Date string
-    Duration int
+    Id string `json:"id"`
+    Host string `json:"host"`
+    Guest string `json:"guest"`
+    Date string `json:"date"`
+    Duration int `json:"duration"`
 }
 
 

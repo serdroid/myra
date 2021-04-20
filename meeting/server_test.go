@@ -2,10 +2,18 @@ package meeting
 
 import (
     "testing"
+    "os"
     "bytes"
     "net/http"
     "net/http/httptest"
+    "encoding/json"
 )
+
+func TestMain(m *testing.M) {
+    Application.Initialize()
+    code := m.Run()
+    os.Exit(code)
+}
 
 func TestGreet(test *testing.T) {
     buffer := bytes.Buffer{}
@@ -69,3 +77,20 @@ func TestGetBye(test *testing.T) {
     }
 }
 
+func TestGetMeeting(test *testing.T) {
+	req, err := http.NewRequest("GET", "/meeting/ali", nil)
+	if err != nil {
+		test.Fatal(err)
+	}
+	responseRecorder := httptest.NewRecorder()
+    Application.router.ServeHTTP(responseRecorder, req)
+	if status := responseRecorder.Code; status != http.StatusOK {
+		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+    var got Meeting
+    json.Unmarshal([]byte(responseRecorder.Body.String()), &got)
+    want := MEETINGS[0]
+    if got != want {
+        test.Errorf("handler returned unexpected body: got %q want %q", got, want)
+    }
+}
