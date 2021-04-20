@@ -10,7 +10,8 @@ import (
 )
 
 func TestMain(m *testing.M) {
-    Application.Initialize()
+    var aWire wireDependencies = &AppWire{}
+    Application.Initialize(&aWire)
     code := m.Run()
     os.Exit(code)
 }

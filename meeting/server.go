@@ -8,30 +8,6 @@ import (
     "github.com/gorilla/mux"
 )
 
-type App struct {
-    router *mux.Router
-    meetingResource *MeetingResource
-}
-
-var Application App;
-
-func (a *App) Initialize() {
-    fmt.Println("Initializing application")
-    a.router = mux.NewRouter()
-    bindHandlers(a.router)
-    a.meetingResource = initializeMeetingResource()
-}
-
-func (a *App) Run() {
-    http.ListenAndServe(":5000", a.router)
-}
-
-func bindHandlers(router *mux.Router) {
-    router.HandleFunc("/hello/{user}", greeterHandler).Methods(http.MethodGet)
-    router.HandleFunc("/bye", byeHandler).Methods(http.MethodGet)
-    router.HandleFunc("/meeting/{user}", meetingHandler).Methods(http.MethodGet)
-}
-
 func meetingHandler(writer http.ResponseWriter, r *http.Request) {
     pathParams := mux.Vars(r)
     user, ok := pathParams["user"]
@@ -39,7 +15,7 @@ func meetingHandler(writer http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(writer, "Please provide valid user.")
     	return
     }
-    meeting := Application.meetingResource.findMeeting(user, "today")
+    meeting := Application.deps.meetingResource.findMeeting(user, "today")
     writer.Header().Set("Content-Type", "application/json")
     encoder := json.NewEncoder(writer)
     encoder.Encode(meeting)
