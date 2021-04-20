@@ -40,17 +40,32 @@ func TestBye(test *testing.T) {
     }
 }
 
-func TestGetHello(test *testing.T) {
-	req, err := http.NewRequest("GET", "/hello", nil)
+func createRequest(test *testing.T, method, path string) *http.Request {
+	req, err := http.NewRequest(method, path, nil)
 	if err != nil {
 		test.Fatal(err)
 	}
+	return req
+}
+
+func executeRequest(req *http.Request) *httptest.ResponseRecorder {
+	responseRecorder := httptest.NewRecorder()
+    Application.router.ServeHTTP(responseRecorder, req)
+    return responseRecorder
+}
+
+func checkResponseStatus(test *testing.T, status int) {
+	if status != http.StatusOK {
+		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+}
+
+func TestGetHello(test *testing.T) {
+	req := createRequest(test, "GET", "/hello")
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(greeterHandler)
 	handler.ServeHTTP(responseRecorder, req)
-	if status := responseRecorder.Code; status != http.StatusOK {
-		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
-	}
+	checkResponseStatus(test, responseRecorder.Code)
 
     got := responseRecorder.Body.String()
     want := "Hello, world\n"
@@ -60,16 +75,9 @@ func TestGetHello(test *testing.T) {
 }
 
 func TestGetBye(test *testing.T) {
-	req, err := http.NewRequest("GET", "/bye", nil)
-	if err != nil {
-		test.Fatal(err)
-	}
-	responseRecorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(byeHandler)
-	handler.ServeHTTP(responseRecorder, req)
-	if status := responseRecorder.Code; status != http.StatusOK {
-		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
-	}
+	req := createRequest(test, "GET", "/bye")
+	responseRecorder := executeRequest(req)
+	checkResponseStatus(test, responseRecorder.Code)
 
     got := responseRecorder.Body.String()
     want := "Good bye"
@@ -79,19 +87,14 @@ func TestGetBye(test *testing.T) {
 }
 
 func TestGetMeeting(test *testing.T) {
-	req, err := http.NewRequest("GET", "/meeting/ali", nil)
-	if err != nil {
-		test.Fatal(err)
-	}
-	responseRecorder := httptest.NewRecorder()
-    Application.router.ServeHTTP(responseRecorder, req)
-	if status := responseRecorder.Code; status != http.StatusOK {
-		test.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
-	}
+	req := createRequest(test, "GET", "/meeting/ali")
+	responseRecorder := executeRequest(req)
+	checkResponseStatus(test, responseRecorder.Code)
+	
     var got Meeting
     json.Unmarshal([]byte(responseRecorder.Body.String()), &got)
     want := MEETINGS[0]
     if got != want {
-        test.Errorf("handler returned unexpected body: got %q want %q", got, want)
+        test.Errorf("handler returned unexpected body: got %v want %v", got, want)
     }
 }
