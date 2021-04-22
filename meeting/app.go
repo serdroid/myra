@@ -6,13 +6,15 @@ import (
     "github.com/gorilla/mux"
 )
 
+var Application App;
+
 type App struct {
     router *mux.Router
     deps *dependencies
 }
 
-type wireDependencies interface {
-    wire() *dependencies
+type DependencyWeaver interface {
+    weave() *dependencies
 }
 
 type dependencies struct {
@@ -22,20 +24,24 @@ type dependencies struct {
 
 type AppWire struct {}
 
-func (a AppWire) wire() *dependencies {
+func (a AppWire) weave() *dependencies {
     store := NewHardCodedDataStore()
     meetingResource := NewMeetingResource(store)
     return &dependencies{store, meetingResource}
 }
 
-var Application App;
+func (a *App) Initialize() {
+    var wr DependencyWeaver = &AppWire{}
+    Application.initDeps(&wr)
+}
 
-func (a *App) Initialize(wir *wireDependencies) {
+
+func (a *App) initDeps(wr *DependencyWeaver) {
     fmt.Println("Initializing application")
     a.router = mux.NewRouter()
     bindHandlers(a.router)
-    w := *wir
-    a.deps = w.wire()
+    w := *wr
+    a.deps = w.weave()
 }
 
 func (a *App) Run() {
