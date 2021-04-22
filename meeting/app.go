@@ -25,7 +25,7 @@ type dependencies struct {
 type AppWire struct {}
 
 func (a AppWire) weave() *dependencies {
-    store := NewHardCodedDataStore()
+    store := NewPostgresDataStore()
     meetingResource := NewMeetingResource(store)
     return &dependencies{store, meetingResource}
 }

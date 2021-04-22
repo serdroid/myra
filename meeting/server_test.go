@@ -9,8 +9,16 @@ import (
     "encoding/json"
 )
 
+type TestWire struct {}
+
+func (t TestWire) weave() *dependencies {
+    store := NewHardCodedDataStore()
+    meetingResource := NewMeetingResource(store)
+    return &dependencies{store, meetingResource}
+}
+
 func TestMain(m *testing.M) {
-    var wr DependencyWeaver = &AppWire{}
+    var wr DependencyWeaver = &TestWire{}
     App.initDeps(&wr)
     code := m.Run()
     os.Exit(code)
@@ -98,3 +106,4 @@ func TestGetMeeting(test *testing.T) {
         test.Errorf("handler returned unexpected body: got %v want %v", got, want)
     }
 }
+
