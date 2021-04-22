@@ -11,7 +11,7 @@ import (
 
 func TestMain(m *testing.M) {
     var wr DependencyWeaver = &AppWire{}
-    Application.initDeps(&wr)
+    App.initDeps(&wr)
     code := m.Run()
     os.Exit(code)
 }
@@ -50,7 +50,7 @@ func createRequest(test *testing.T, method, path string) *http.Request {
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 	responseRecorder := httptest.NewRecorder()
-    Application.router.ServeHTTP(responseRecorder, req)
+    App.router.ServeHTTP(responseRecorder, req)
     return responseRecorder
 }
 

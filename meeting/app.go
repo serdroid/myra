@@ -6,12 +6,12 @@ import (
     "github.com/gorilla/mux"
 )
 
-var Application App;
-
-type App struct {
+type Application struct {
     router *mux.Router
     deps *dependencies
 }
+
+var App Application;
 
 type DependencyWeaver interface {
     weave() *dependencies
@@ -30,13 +30,13 @@ func (a AppWire) weave() *dependencies {
     return &dependencies{store, meetingResource}
 }
 
-func (a *App) Initialize() {
+func (a *Application) Initialize() {
     var wr DependencyWeaver = &AppWire{}
-    Application.initDeps(&wr)
+    App.initDeps(&wr)
 }
 
 
-func (a *App) initDeps(wr *DependencyWeaver) {
+func (a *Application) initDeps(wr *DependencyWeaver) {
     fmt.Println("Initializing application")
     a.router = mux.NewRouter()
     bindHandlers(a.router)
@@ -44,7 +44,7 @@ func (a *App) initDeps(wr *DependencyWeaver) {
     a.deps = w.weave()
 }
 
-func (a *App) Run() {
+func (a *Application) Run() {
     http.ListenAndServe(":5000", a.router)
 }
 

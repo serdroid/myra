@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-     meeting.Application.Initialize()
-     meeting.Application.Run()
+     meeting.App.Initialize()
+     meeting.App.Run()
 }
