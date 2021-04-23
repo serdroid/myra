@@ -1,7 +1,7 @@
 package meeting
 
 type Meeting struct {
-    Id string `json:"id"`
+    ID string `json:"id"`
     Host string `json:"host"`
     Guest string `json:"guest"`
     Date string `json:"date"`
@@ -20,10 +20,5 @@ func NewMeetingResource(store *dataStore) *MeetingResource {
 func (m *MeetingResource) findMeeting(host string, date string) Meeting {
     store := *m.Store
     return store.findMeeting(host, date)
-}
-
-func initializeMeetingResource() *MeetingResource {
-    store := NewHardCodedDataStore()
-    return NewMeetingResource(store)
 }
 
