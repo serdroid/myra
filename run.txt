@@ -1,0 +1,10 @@
+# first run
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=password -d --volume $(pwd)/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql:ro --name my-postgres postgres:13-alpine
+
+# after then
+docker start my-postgres
+
+export DB_USER=postgres
+export DB_PASSWD=password
+export DB_URL=postgres
+

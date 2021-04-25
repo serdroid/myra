@@ -20,14 +20,3 @@ func NewHardCodedDataStore() *dataStore {
     return &store
 }
 
-type postgresDataStore struct {}
-
-func (p *postgresDataStore) findMeeting(host string, date string) Meeting {
-    return MEETINGS[1]
-}
-
-func NewPostgresDataStore() *dataStore {
-    var store dataStore = &postgresDataStore{}
-    return &store
-}
-
