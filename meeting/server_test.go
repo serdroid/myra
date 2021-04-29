@@ -9,6 +9,7 @@ import (
     "encoding/json"
 )
 
+// Test implementation of the DependencyWeaver interface
 type TestWire struct {}
 
 func (t TestWire) weave() *dependencies {
