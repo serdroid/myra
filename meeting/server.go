@@ -15,7 +15,8 @@ func meetingHandler(writer http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(writer, "Please provide valid user.")
     	return
     }
-    meeting := App.deps.meetingResource.findMeeting(user, "today")
+    ds := *App.deps.store
+    meeting := ds.findMeeting(user, "today")
     writer.Header().Set("Content-Type", "application/json")
     encoder := json.NewEncoder(writer)
     encoder.Encode(meeting)

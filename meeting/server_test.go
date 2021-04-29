@@ -14,8 +14,7 @@ type TestWire struct {}
 
 func (t TestWire) weave() *dependencies {
     store := NewHardCodedDataStore()
-    meetingResource := NewMeetingResource(store)
-    return &dependencies{store, meetingResource}
+    return &dependencies{store}
 }
 
 func TestMain(m *testing.M) {

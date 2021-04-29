@@ -24,7 +24,6 @@ type DependencyWeaver interface {
 // dependency tree structure
 type dependencies struct {
     store *dataStore
-    meetingResource *MeetingResource   
 }
 
 // Production implementation of the DependencyWeaver interface
@@ -32,8 +31,7 @@ type AppWire struct {}
 
 func (a AppWire) weave() *dependencies {
     store := NewPostgresDataStore()
-    meetingResource := NewMeetingResource(store)
-    return &dependencies{store, meetingResource}
+    return &dependencies{store}
 }
 
 // Initializes application. Creates router and dependency tree.

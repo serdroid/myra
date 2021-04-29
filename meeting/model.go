@@ -8,17 +8,3 @@ type Meeting struct {
     Duration int `json:"duration"`
 }
 
-
-type MeetingResource struct {
-    Store *dataStore
-}
-
-func NewMeetingResource(store *dataStore) *MeetingResource {
-    return &MeetingResource{Store : store}
-}
-
-func (m *MeetingResource) findMeeting(host string, date string) Meeting {
-    store := *m.Store
-    return store.findMeeting(host, date)
-}
-
