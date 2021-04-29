@@ -49,6 +49,12 @@ func (p *postgresDataStore) findMeeting(host string, date string) Meeting {
 	return mt
 }
 
+func (p *postgresDataStore) createMeeting(m *Meeting) error {
+    _, err := p.DB.Exec("INSERT INTO meeting(id, host, guest, date, duration) VALUES($1, $2, $3, $4, $5)", 
+        m.ID, m.Host, m.Guest, m.Date, m.Duration)
+    return err
+}
+
 func NewPostgresDataStore() *dataStore {
 	db := connectToDB()
     var store dataStore = &postgresDataStore{db}
