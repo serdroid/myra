@@ -107,3 +107,37 @@ func TestGetMeeting(test *testing.T) {
     }
 }
 
+func TestMarshalMeeting(test *testing.T) {
+    nm := Meeting{Host:"efe", Guest:"kahya", Date:"20210429", Duration:30}
+    by, _ := json.Marshal(&nm)
+    got := string(by)
+    want := `{"id":"","host":"efe","guest":"kahya","date":"20210429","duration":30}`
+
+    if got != want {
+        test.Errorf("marshall err: got %v want %v", got, want)
+    }
+}
+
+
+func TestCreateMeeting(test *testing.T) {
+    var jsonStr = []byte(`{"host":"efe","guest":"kahya","date":"20210429","duration":30}`)
+    req, _ := http.NewRequest("POST", "/meeting", bytes.NewBuffer(jsonStr))
+    req.Header.Set("Content-Type", "application/json")
+	responseRecorder := executeRequest(req)
+	checkResponseStatus(test, responseRecorder.Code)
+    
+    //var m map[string]interface{}
+    //json.Unmarshal(response.Body.Bytes(), &m)	
+    got := responseRecorder.Body.String()
+    want := "{\"id\":\"ef32\"}\n"
+    if got != want {
+        test.Errorf("handler returned unexpected body: got %v want %v", got, want)
+    }
+}
+
+func BenchmarkRandomStr(bench *testing.B) {
+    for i:= 0; i < bench.N; i++ {
+        randomString(16)
+    }
+}
+

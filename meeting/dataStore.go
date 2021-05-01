@@ -26,5 +26,6 @@ func NewHardCodedDataStore() *dataStore {
 }
 
 func (h *hardCodedDataStore) createMeeting(m *Meeting) error {
+    m.ID = "ef32"
     return nil
 }

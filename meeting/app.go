@@ -2,6 +2,7 @@ package meeting
 
 import (
     "fmt"
+    "crypto/rand"
     "net/http"
     "github.com/gorilla/mux"
 )
@@ -57,6 +58,13 @@ func (a *Application) Run() {
 func bindHandlers(router *mux.Router) {
     router.HandleFunc("/hello/{user}", greeterHandler).Methods(http.MethodGet)
     router.HandleFunc("/bye", byeHandler).Methods(http.MethodGet)
-    router.HandleFunc("/meeting/{user}", meetingHandler).Methods(http.MethodGet)
+    router.HandleFunc("/meeting/{user}", getMeetingHandler).Methods(http.MethodGet)
+    router.HandleFunc("/meeting", createMeetingHandler).Methods(http.MethodPost)
+}
+
+func randomString(length int) string {
+    b := make([]byte, length)
+    rand.Read(b)
+    return fmt.Sprintf("%x", b)[:length]
 }
 

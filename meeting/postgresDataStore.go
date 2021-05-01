@@ -50,6 +50,7 @@ func (p *postgresDataStore) findMeeting(host string, date string) Meeting {
 }
 
 func (p *postgresDataStore) createMeeting(m *Meeting) error {
+    m.ID = randomString(16)
     _, err := p.DB.Exec("INSERT INTO meeting(id, host, guest, date, duration) VALUES($1, $2, $3, $4, $5)", 
         m.ID, m.Host, m.Guest, m.Date, m.Duration)
     return err

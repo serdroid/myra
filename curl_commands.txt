@@ -3,3 +3,8 @@ curl http://localhost:5000/bye
 
 curl http://localhost:5000/meeting/deli
 
+curl -X POST http://localhost:5000/meeting -d '{"host":"isci","guest":"emekci","date":"20210501","duration":1440}'
+{"id":"8e11b00e1de2150a"}
+
+curl http://localhost:5000/meeting/isci
+{"id":"8e11b00e1de2150a    ","host":"isci","guest":"emekci","date":"20210501","duration":1440}
