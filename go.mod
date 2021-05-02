@@ -1,4 +1,4 @@
-module myra
+module github.com/serdroid/myra
 
 go 1.16
 

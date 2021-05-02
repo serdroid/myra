@@ -1,7 +1,7 @@
 package main
 
 import (
-       "myra/meeting"
+       "github.com/serdroid/myra/meeting"
 )
 
 func main() {
